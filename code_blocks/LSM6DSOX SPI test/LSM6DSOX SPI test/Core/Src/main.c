@@ -70,7 +70,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	User_Code_Init();
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -94,7 +94,7 @@ int main(void)
   MX_SPI2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  User_Code_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,6 +106,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   }
+  User_Code_End();
   /* USER CODE END 3 */
 }
 

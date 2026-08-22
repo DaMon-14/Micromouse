@@ -21,7 +21,8 @@ extern UART_HandleTypeDef huart2;
 uint32_t previous_spi_timestamp = 0;
 
 void User_Code_Init(void) {
-
+	HAL_Delay(50);
+	IMU_Init();
 }
 
 void User_Code_Run(void) {
@@ -31,7 +32,7 @@ void User_Code_Run(void) {
 	// Check if 500 milliseconds have passed to read the sensor
 	if (current_timestamp - previous_spi_timestamp >= 500) {
 		previous_spi_timestamp = current_timestamp;
-		uint8_t ret = Read_WhoAmI();
+		uint8_t ret = Read_Reg(0x22);
 
 		// 5. Create an empty character array (buffer) large enough to hold the message[cite: 1]
 		char msg[50];

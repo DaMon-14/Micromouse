@@ -1,0 +1,32 @@
+# --- Build Outputs ---
+Debug/
+Release/
+build/
+
+# --- Compiled Artifacts ---
+*.elf
+*.map
+*.bin
+*.hex
+*.srec
+*.lst
+*.o
+*.d
+*.a
+*.su
+*.crl
+
+# --- IDE & Workspace Files (STM32CubeIDE / Eclipse) ---
+.metadata/
+.settings/
+*.launch
+*.log
+
+# --- OS Generated Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

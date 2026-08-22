@@ -9,6 +9,42 @@
 
 extern SPI_HandleTypeDef hspi2;
 
+IMU_Data Read_IMU_Data(void) {
+	IMU_Data data = Read_IMU_Data_Raw();
+	data.acc_x = (data.acc_x * 0.061f) / 1000.0f;
+	data.acc_y = (data.acc_y * 0.061f) / 1000.0f;
+	data.acc_z = (data.acc_z * 0.061f) / 1000.0f;
+
+	data.gyro_x = (data.gyro_x * 8.75f) / 1000.0f;
+	data.gyro_y = (data.gyro_y * 8.75f) / 1000.0f;
+	data.gyro_z = (data.gyro_z * 8.75f) / 1000.0f;
+	return data;
+}
+
+IMU_Data Read_IMU_Data_Raw(void) {
+	IMU_Data data = { 0 };
+	uint8_t spi_tx[13] = { 0 };
+	uint8_t spi_rx[13] = { 0 };
+
+	// Burst read starting from OUTX_L_G (0x22) with Read bit set (0x80)
+	spi_tx[0] = 0x22 | 0x80;
+
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+	HAL_SPI_TransmitReceive(&hspi2, spi_tx, spi_rx, 13, 20);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+
+	// Bitwise Reassembly (Low byte first, then High byte shifted by 8)
+	data.gyro_x = (int16_t) ((spi_rx[2] << 8) | spi_rx[1]);
+	data.gyro_y = (int16_t) ((spi_rx[4] << 8) | spi_rx[3]);
+	data.gyro_z = (int16_t) ((spi_rx[6] << 8) | spi_rx[5]);
+
+	data.acc_x = (int16_t) ((spi_rx[8] << 8) | spi_rx[7]);
+	data.acc_y = (int16_t) ((spi_rx[10] << 8) | spi_rx[9]);
+	data.acc_z = (int16_t) ((spi_rx[12] << 8) | spi_rx[11]);
+
+	return data;
+}
+
 uint8_t Read_WhoAmI(void) {
 	uint8_t spi_tx[2];
 	uint8_t spi_rx[2];

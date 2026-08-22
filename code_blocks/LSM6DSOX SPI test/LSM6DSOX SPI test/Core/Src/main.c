@@ -21,8 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
-#include <string.h>
+#include "Code_Logic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -71,9 +70,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint8_t spi_tx[2];
-	  uint8_t spi_rx[2];
-	  uint32_t previous_spi_timestamp = 0;
+	User_Code_Init();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -104,38 +101,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
     {
-      // Get the current time in milliseconds[cite: 1]
-      uint32_t current_timestamp = HAL_GetTick();
-
-      // Check if 500 milliseconds have passed to read the sensor
-      if (current_timestamp - previous_spi_timestamp >= 500)
-      {
-          previous_spi_timestamp = current_timestamp;
-
-          // 1. Prepare the SPI buffer
-          // 0x0F is the WHO_AM_I register.
-          // We bitwise OR it with 0x80 to set the MSB to 1 (Read command).
-          spi_tx[0] = 0x0F | 0x80;
-          spi_tx[1] = 0x00; // Dummy byte to clock in the sensor's response
-
-          // 2. Pull the CS pin (PB12) LOW to wake up the sensor
-          HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-
-          // 3. Transmit the register address and receive the response simultaneously
-          HAL_SPI_TransmitReceive(&hspi2, spi_tx, spi_rx, 2, 10);
-
-          // 4. Pull the CS pin (PB12) HIGH to release the sensor
-          HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-
-          // 5. Create an empty character array (buffer) large enough to hold the message[cite: 1]
-          char msg[50];
-
-          // 6. Format the string to display the WHO_AM_I result (expected: 0x6C)
-          sprintf(msg, "[%lu ms] LSM6DSOX WHO_AM_I: 0x%02X\r\n", current_timestamp, spi_rx[1]);
-
-          // 7. Transmit the message over UART2[cite: 1]
-          HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 10);
-      }
+      User_Code_Run();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

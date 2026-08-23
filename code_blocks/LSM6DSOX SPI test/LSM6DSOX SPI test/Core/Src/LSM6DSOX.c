@@ -11,6 +11,48 @@ extern SPI_HandleTypeDef hspi2;
 
 static int16_t raw_data[6];
 static float data[6];
+static float calibrated_data[6];
+static float bias[6];
+
+float* Read_IMU_Data_Calibrated(void){
+	Read_IMU_Data();
+	calibrated_data[0]=data[0]-bias[0];
+	calibrated_data[1]=data[1]-bias[1];
+	calibrated_data[2]=data[2]-bias[2];
+	calibrated_data[3]=data[3]-bias[3];
+	calibrated_data[4]=data[4]-bias[4];
+	calibrated_data[5]=data[5]-bias[5];
+
+	return calibrated_data;
+}
+
+void IMU_Calibrate(void) {
+	int samples = 250;
+	float temp_gyro[3] = { 0.0f, 0.0f, 0.0f };
+	float temp_accel[3] = { 0.0f, 0.0f, 0.0f };
+
+	// Keep the board still during this loop!
+	for (int i = 0; i < samples; i++) {
+		float *motion = Read_IMU_Data();
+		temp_gyro[0] += motion[0]; // Gyro X
+		temp_gyro[1] += motion[1]; // Gyro Y
+		temp_gyro[2] += motion[2]; // Gyro Z
+
+		temp_accel[0] += motion[3];
+		temp_accel[1] += motion[4];
+		temp_accel[2] += motion[5];
+
+		HAL_Delay(1);
+	}
+
+	// Average out the resting offset
+	bias[0] = temp_gyro[0] / samples;
+	bias[1] = temp_gyro[1] / samples;
+	bias[2] = temp_gyro[2] / samples;
+	bias[3] = temp_accel[0] / samples;
+	bias[4] = temp_accel[1] / samples;
+	bias[5] = temp_accel[2] / samples;
+}
 
 float* Read_IMU_Data(void) {
 	Read_IMU_Data_Raw();

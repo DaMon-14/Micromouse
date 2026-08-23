@@ -15,4 +15,7 @@ void IMU_Init(void);
 
 int16_t* Read_IMU_Data_Raw(void);
 float* Read_IMU_Data(void);
+
+void IMU_Calibrate(void);
+float* Read_IMU_Data_Calibrated(void);
 #endif /* INC_LSM6DSOX_H_ */

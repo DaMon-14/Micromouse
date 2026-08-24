@@ -6,6 +6,7 @@
  */
 #include "main.h"
 #include "Code_Logic.h"
+#include "HC-05.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -20,6 +21,13 @@ void User_Code_Init(void) {
 	HAL_Delay(50);
 	IMU_Init();
 	IMU_Calibrate();
+	BLE_Init();
+	if(BLE_IsConnected()==1){
+		HAL_UART_Transmit(&huart2, "Connected\r\n", strlen("Connected\r\n"), 10);
+		BLE_Write("Connected\r\n");
+	}else{
+		HAL_UART_Transmit(&huart2, "Not Connected\r\n", strlen("Not Connected\r\n"), 10);
+	}
 }
 
 void User_Code_Run(void) {
@@ -33,14 +41,14 @@ void User_Code_Run(void) {
 		float* motion = Read_IMU_Data_Calibrated();
 
 		// 5. Create an empty character array (buffer) large enough to hold the message[cite: 1]
-		char msg[120];
+		uint8_t* data = BLE_Read_Msg(1);
 
 		// 6. Format the string to display the WHO_AM_I result (expected: 0x6C)
 		//sprintf(msg, "[%lu ms] LSM6DSOX WHO_AM_I: 0x%02X\r\n", current_timestamp, ret);
 		//sprintf(msg, "Acc:[X:%.2fg Y:%.2fg Z:%.2fg] | Gyro:[X:%.2fdps Y:%.2fdps Z:%.2fdps]\r\n", motion[3], motion[4], motion[5], motion[0], motion[1], motion[2]);
-		sprintf(msg, "%.2f\r\n", motion[2]);
+		//sprintf(msg, "%.2f\r\n", motion[2]);
 		// 7. Transmit the message over UART2[cite: 1]
-		HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), 10);
+		HAL_UART_Transmit(&huart2, data, strlen((char*)data), 10);
 	}
 }
 

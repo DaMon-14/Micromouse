@@ -7,6 +7,7 @@
 #include "main.h"
 #include "Code_Logic.h"
 #include "HC-05.h"
+#include "MT6701.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -17,14 +18,15 @@ extern UART_HandleTypeDef huart2;
 
 uint32_t previous_spi_timestamp = 0;
 
+float rez = 0;
+		uint8_t dir =0;
+
 void User_Code_Init(void) {
 	HAL_Delay(50);
 	IMU_Init();
 	IMU_Calibrate();
 	BLE_Init();
-	while (!BLE_IsConnected()) {
-		HAL_Delay(1);
-	}
+	Encoder_Init();
 	HAL_UART_Transmit(&huart2, "Connected\r\n", strlen("Connected\r\n"), 15);
 }
 
@@ -48,7 +50,11 @@ void User_Code_Run(void) {
 		// 6. Format the string to display the WHO_AM_I result (expected: 0x6C)
 		//sprintf(msg, "[%lu ms] LSM6DSOX WHO_AM_I: 0x%02X\r\n", current_timestamp, ret);
 		//sprintf(msg, "Acc:[X:%.2fg Y:%.2fg Z:%.2fg] | Gyro:[X:%.2fdps Y:%.2fdps Z:%.2fdps]\r\n", motion[3], motion[4], motion[5], motion[0], motion[1], motion[2]);
-		//sprintf(msg, "%.2f\r\n", motion[2]);
+
+		Read_Encoder(&rez, &dir);
+		char msg[90];
+		sprintf(msg, "%f\r\n", rez);
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 10);
 		// 7. Transmit the message over UART2[cite: 1]
 
 	}

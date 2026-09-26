@@ -240,7 +240,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "1"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -658,13 +658,18 @@
       {
         "filename": "PCB_V1.kicad_sch",
         "name": "PCB_V1",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "60e72edc-0463-4662-83ed-8b497d5e74b2"
       }
     ],
-    "used_designators": "D1",
+    "used_designators": "#PWR1-11,D1,U1-3,J1,C1-4",
     "variants": []
   },
-  "sheets": [],
+  "sheets": [
+    [
+      "60e72edc-0463-4662-83ed-8b497d5e74b2",
+      "PCB_V1"
+    ]
+  ],
   "text_variables": {},
   "tuning_profiles": {
     "meta": {

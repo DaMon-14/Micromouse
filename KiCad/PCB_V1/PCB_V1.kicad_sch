@@ -3055,7 +3055,7 @@
 					)
 				)
 			)
-			(property "Footprint" "lcsc_footprints:C2906280_SW-SMD_MST22D18G2"
+			(property "Footprint" "LCSC:C2906280_SW-SMD_MST22D18G2"
 				(at 0 -10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -13456,7 +13456,7 @@
 		(fields_autoplaced yes)
 		(uuid "0f267104-0f76-4a35-83a0-21f2651fb8bc")
 		(property "Reference" "SW6"
-			(at 108.585 155.5749 0)
+			(at 109.22 155.5749 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13467,7 +13467,7 @@
 			)
 		)
 		(property "Value" "MST22D18G2 125"
-			(at 108.585 158.1149 0)
+			(at 109.22 158.1149 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13477,7 +13477,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "lcsc_footprints:C2906280_SW-SMD_MST22D18G2"
+		(property "Footprint" "LCSC:C2906280_SW-SMD_MST22D18G2"
 			(at 100.965 167.005 0)
 			(hide yes)
 			(show_name no)
@@ -17896,7 +17896,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "lcsc_footprints:C2906280_SW-SMD_MST22D18G2"
+		(property "Footprint" "LCSC:C2906280_SW-SMD_MST22D18G2"
 			(at 34.29 167.005 0)
 			(hide yes)
 			(show_name no)
@@ -18169,7 +18169,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "lcsc_footprints:C2906280_SW-SMD_MST22D18G2"
+		(property "Footprint" "LCSC:C2906280_SW-SMD_MST22D18G2"
 			(at 68.58 167.005 0)
 			(hide yes)
 			(show_name no)
